@@ -1,0 +1,14 @@
+{
+    "name": "health-ledger/health-ledger",
+    "description": "Health Ledger - Electronic Medical Record System",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "endroid/qr-code": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}

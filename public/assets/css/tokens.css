@@ -1,0 +1,113 @@
+/*
+ * HEALTH LEDGER — Design Tokens
+ * Maps SKILL.md tokens onto Bootstrap 5 CSS custom properties.
+ * Loaded after Bootstrap's own CSS so these overrides take effect.
+ *
+ * SPACING MAPPING  (SKILL.md → Bootstrap utility)
+ * Bootstrap's spacer utilities (p-* / m-* / gap-*) are compiled to
+ * static values and CANNOT be remapped via CSS variables.
+ *
+ *   SKILL.md    Value     Bootstrap utility
+ *   ──────────────────────────────────────────
+ *   space-0     0          p-0 / m-0 / gap-0
+ *   space-1     0.25rem    p-1 / m-1 / gap-1
+ *   space-2     0.5rem     p-2 / m-2 / gap-2
+ *   space-3     1rem       p-3 / m-3 / gap-3
+ *   space-4     1.5rem     p-4 / m-4 / gap-4
+ *   space-6     2rem       (no direct utility — use p-4 + p-2, or p-3 + p-3)
+ *   space-8     3rem       p-5 / m-5 / gap-5
+ *   space-12    4rem       (no direct utility — use p-5 + p-1)
+ */
+
+:root {
+  /* ================================================================
+   *  COLOR PALETTE
+   *  ================================================================ */
+
+  /* --- Brand / semantic --- */
+  --bs-primary:               #2563EB;   /* accent-primary       */
+  --bs-primary-rgb:            37, 99, 235;
+  --bs-success:               #16A34A;   /* success              */
+  --bs-success-rgb:            22, 163, 74;
+  --bs-warning:               #D97706;   /* warning              */
+  --bs-warning-rgb:            217, 119, 6;
+  --bs-danger:                #DC2626;   /* danger               */
+  --bs-danger-rgb:             220, 38, 38;
+
+  /* --- Body / surface --- */
+  --bs-body-color:            #111827;   /* text-primary         */
+  --bs-body-color-rgb:         17, 24, 39;
+  --bs-body-bg:               #FFFFFF;   /* bg-primary           */
+  --bs-body-bg-rgb:            255, 255, 255;
+  --bs-emphasis-color:        #111827;   /* text-primary (strong)*/
+  --bs-emphasis-color-rgb:     17, 24, 39;
+  --bs-secondary-color:       #4B5563;   /* text-secondary       */
+  --bs-secondary-color-rgb:    75, 85, 99;
+  --bs-secondary-bg:          #F9FAFB;   /* bg-secondary         */
+  --bs-secondary-bg-rgb:       249, 250, 251;
+  --bs-tertiary-color:        #6B7280;   /* between primary &    */
+  --bs-tertiary-color-rgb:     107, 114, 128;
+  --bs-tertiary-bg:           #F3F4F6;   /* between primary &    */
+  --bs-tertiary-bg-rgb:        243, 244, 246;
+
+  /* --- Links --- */
+  --bs-link-color:            #2563EB;
+  --bs-link-color-rgb:         37, 99, 235;
+  --bs-link-hover-color:      #1D4ED8;
+  --bs-link-hover-color-rgb:   29, 78, 216;
+
+  /* --- Semantic color variants (text-emphasis / bg-subtle / border-subtle) --- */
+  --bs-primary-text-emphasis:    #1D4ED8;
+  --bs-primary-bg-subtle:       #DBEAFE;
+  --bs-primary-border-subtle:   #93C5FD;
+  --bs-success-text-emphasis:   #15803D;
+  --bs-success-bg-subtle:       #DCFCE7;
+  --bs-success-border-subtle:   #86EFAC;
+  --bs-warning-text-emphasis:   #B45309;
+  --bs-warning-bg-subtle:       #FEF3C7;
+  --bs-warning-border-subtle:   #FDE68A;
+  --bs-danger-text-emphasis:    #B91C1C;
+  --bs-danger-bg-subtle:        #FEE2E2;
+  --bs-danger-border-subtle:    #FCA5A5;
+
+  /* ================================================================
+   *  FOCUS RING
+   *  Solid colour required to meet WCAG 2.2 AA 3:1 minimum contrast
+   *  against bg-primary (#FFFFFF).  Accent-primary on white = 5.07:1.
+   *  ================================================================ */
+
+  --bs-focus-ring-color: #2563EB;
+  --bs-focus-ring-width: 0.25rem;
+  --bs-focus-ring-blur: 0;
+  --bs-focus-ring-box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
+
+  /* ================================================================
+   *  BORDER RADIUS
+   *  ================================================================ */
+
+  --bs-border-radius:        0.5rem;    /* 8px  — general          */
+  --bs-border-radius-sm:     0.375rem;  /* 6px  — badges / tags   */
+  --bs-border-radius-lg:     0.75rem;   /* 12px — cards / inputs  */
+  --bs-border-radius-xl:     1rem;      /* 16px — modals / sheets */
+  --bs-border-radius-xxl:    2rem;      /* 32px — pills           */
+
+  /* ================================================================
+   *  MOTION TOKENS  (custom — not Bootstrap overrides)
+   *  ================================================================ */
+
+  --duration-fast:  120ms;
+  --duration-base:  200ms;
+  --ease-standard:  ease;
+}
+
+/* ================================================================
+ *  TYPOGRAPHY  — heading / display sizes
+ *  Override Bootstrap's responsive calc() with the SKILL.md scale.
+ *  Token mapping: display-1 → display-xl, display-2 → display-lg,
+ *                 h1 → heading-lg, h2 → heading-md
+ *  ================================================================ */
+
+.display-1 { font-size: 2.75rem; }  /* display-xl  (44px) */
+.display-2 { font-size: 2.25rem; }  /* display-lg  (36px) */
+h1, .h1     { font-size: 1.75rem; }  /* heading-lg  (28px) */
+h2, .h2     { font-size: 1.25rem; }  /* heading-md  (20px) */

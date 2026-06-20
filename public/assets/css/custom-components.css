@@ -1,0 +1,12 @@
+/* ================================================================
+ * HEALTH LEDGER — Custom Components
+ * Things Bootstrap has no equivalent for.
+ * ================================================================ */
+
+/* Shown when the app detects no connectivity */
+.offline-banner {
+}
+
+/* The card showing a patient's health ID + QR code */
+.health-id-card {
+}
