@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Profile</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --green-badge-bg:#e5f7e9;
+    --green-badge-text:#2fa84f;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .top-header{display:flex;align-items:center;gap:8px;padding:18px 20px 14px 20px;}
+  .brand{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--teal-dark);}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);}
+
+  .body{padding:0 20px 24px 20px;flex:1;}
+
+  .patient-header{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:18px;
+    box-shadow:var(--card-shadow);position:relative;
+  }
+  .patient-avatar{
+    width:46px;height:46px;border-radius:50%;flex-shrink:0;
+    background:var(--mint-bg);color:var(--teal-dark);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;
+  }
+  .patient-header h3{margin:0;font-size:15px;font-weight:700;}
+  .patient-header .meta{font-size:11.5px;color:var(--muted);margin:2px 0 8px 0;}
+  .patient-header .hid{font-size:10px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;}
+  .patient-header .hid-val{font-size:13px;font-weight:700;color:var(--teal-dark);}
+  .verified-tag{position:absolute;top:12px;right:14px;font-size:9.5px;font-weight:700;color:var(--green-badge-text);background:var(--green-badge-bg);padding:3px 8px;border-radius:20px;}
+
+  .tab-row{display:flex;gap:8px;margin-bottom:18px;}
+  .tab{padding:9px 16px;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;background:#f4f5f7;color:var(--muted);}
+  .tab.active{background:var(--teal-dark);color:#fff;}
+
+  .history-entry{
+    border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:var(--card-shadow);
+  }
+  .history-entry .entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .history-entry .entry-date{font-size:10.5px;color:var(--muted);}
+  .history-entry .entry-facility{font-size:10.5px;color:var(--teal-dark);font-weight:600;}
+  .history-entry h4{margin:0 0 8px 0;font-size:14px;font-weight:700;}
+  .rx-box{background:var(--mint-bg);border-radius:10px;padding:8px 10px;}
+  .rx-box .rx-label{font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
+  .rx-box p{margin:0;font-size:11.5px;color:var(--teal-dark);opacity:.9;line-height:1.4;}
+  .history-entry .plain-note{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="top-header">
+    <div class="brand"><span class="dot"></span> HealthSync</div>
+  </div>
+
+  <div class="body">
+
+    <div class="patient-header">
+      <div class="patient-avatar">AL</div>
+      <div>
+        <h3>Amara Lawson</h3>
+        <div class="meta">29 Years &middot; Female &middot; Ekona Village</div>
+        <div class="hid">Health ID</div>
+        <div class="hid-val">HS-8829-BK10</div>
+      </div>
+      <span class="verified-tag">VERIFIED</span>
+    </div>
+
+    <div class="tab-row">
+      <div class="tab active" onclick="switchTab(this,'history')">Medical History</div>
+      <div class="tab" onclick="switchTab(this,'meds')">Medications</div>
+    </div>
+
+    <div id="historyView">
+      <div class="history-entry">
+        <div class="entry-top">
+          <span class="entry-date">Oct 24, 2025</span>
+          <span class="entry-facility">St. Jude Community Clinic</span>
+        </div>
+        <h4>Acute Bronchitis</h4>
+        <div class="rx-box">
+          <div class="rx-label">Prescription</div>
+          <p>Amoxicillin 500mg (3x daily), Salbutamol inhaler</p>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="entry-top">
+          <span class="entry-date">May 12, 2025</span>
+          <span class="entry-facility">District 4 Clinic</span>
+        </div>
+        <h4>Malaria (Uncomplicated)</h4>
+        <div class="rx-box">
+          <div class="rx-label">Prescription</div>
+          <p>Artemether-Lumefantrine (Coartem) 20/120mg</p>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="entry-top">
+          <span class="entry-date">Mar 5, 2025</span>
+          <span class="entry-facility">Village Health Post</span>
+        </div>
+        <h4>Annual Physical Exam</h4>
+        <p class="plain-note">Routine checkup. BP 120/80, Weight 68kg, vitals normal.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const medications = [
+    { name:"Amoxicillin 500mg", note:"1 capsule every 8 hours", tag:"7 DAYS" },
+    { name:"Salbutamol Inhaler", note:"2 puffs as needed for wheeze", tag:"PRN" },
+    { name:"Artemether-Lumefantrine", note:"20/120mg, twice daily", tag:"3 DAYS" }
+  ];
+
+  function switchTab(tabEl, view){
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    const container = document.getElementById('historyView');
+    if(view === 'meds'){
+      container.innerHTML = medications.map(m => `
+        <div class="history-entry">
+          <div class="entry-top">
+            <h4 style="margin:0;">${m.name}</h4>
+            <span class="entry-facility">${m.tag}</span>
+          </div>
+          <p class="plain-note">${m.note}</p>
+        </div>
+      `).join('');
+    } else {
+      location.reload();
+    }
+  }
+
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

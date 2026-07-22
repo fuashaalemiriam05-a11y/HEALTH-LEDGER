@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Ledger</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:#ffffff;
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+  }
+  .logo-circle{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    background:var(--teal-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 12px 30px rgba(15,111,102,0.25);
+  }
+  .brand-title{
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:2px;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+  <div class="logo-circle">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+      <path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/>
+      <path d="M12 8v6M9 11h6"/>
+    </svg>
+  </div>
+  <div class="brand-title">Health Ledger</div>
+</div>
+<script>
+    // Wait for 3 seconds, then automatically go to the login page
+    setTimeout(function() {
+        window.location.href = "welcomelogin.html";
+    }, 3000);
+</script>
+
+</body>
+</html>

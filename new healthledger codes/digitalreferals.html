@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Referrals</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --green-badge-bg:#e5f7e9;
+    --green-badge-text:#2fa84f;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .header{display:flex;align-items:center;gap:10px;padding:18px 20px 14px 20px;}
+  .back-btn{background:none;border:none;color:var(--teal-dark);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+  .header h1{font-size:14px;margin:0;font-weight:700;flex:1;color:var(--teal-dark);}
+
+  .body{padding:0 20px 24px 20px;flex:1;}
+
+  h2{font-size:18px;font-weight:700;margin:0 0 4px 0;}
+  .sub{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 18px 0;}
+
+  .patient-mini{
+    display:flex;align-items:center;gap:12px;background:var(--mint-bg);border-radius:14px;padding:12px 14px;margin-bottom:20px;position:relative;
+  }
+  .patient-mini .icon-circle{
+    width:38px;height:38px;border-radius:50%;background:var(--teal-dark);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;
+  }
+  .patient-mini h4{margin:0;font-size:13.5px;font-weight:700;color:var(--teal-dark);}
+  .patient-mini p{margin:2px 0 0 0;font-size:11px;color:var(--teal-dark);opacity:.8;}
+  .urgent-tag{position:absolute;top:12px;right:14px;font-size:9px;font-weight:700;color:#d94b4b;background:#fbe6e6;padding:3px 8px;border-radius:20px;}
+
+  .field-card{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:var(--card-shadow);}
+  .field-card .card-label{font-size:11.5px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.3px;margin-bottom:12px;}
+
+  .field-group{margin-bottom:14px;}
+  .field-group:last-child{margin-bottom:0;}
+  .field-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block;}
+  .field-input, .field-select{
+    width:100%;background:#f6f9f8;border:1px solid var(--line);border-radius:12px;
+    padding:12px 14px;font-size:13.5px;color:var(--ink);font-family:inherit;outline:none;appearance:none;
+  }
+  .field-input:focus, .field-select:focus{border-color:var(--teal);}
+  .field-input::placeholder{color:#a7b3b1;}
+
+  .method-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .method-card{
+    border:1.5px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;
+  }
+  .method-card.selected{border-color:var(--teal);background:var(--mint-bg);}
+  .method-card .icon-circle{
+    width:32px;height:32px;border-radius:9px;background:var(--mint-bg);margin:0 auto 8px auto;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .method-card.selected .icon-circle{background:#fff;}
+  .method-card h5{margin:0 0 2px 0;font-size:12px;font-weight:700;color:var(--teal-dark);}
+  .method-card p{margin:0;font-size:10px;color:var(--muted);}
+
+  .submit-btn{
+    width:100%;background:var(--teal-dark);color:#fff;border:none;border-radius:12px;
+    padding:13px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;margin-bottom:12px;
+  }
+  .submit-btn:hover{background:var(--teal);}
+  .cancel-link{text-align:center;font-size:11.5px;color:var(--muted);cursor:pointer;}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">&#8592;</button>
+    <h1>HealthSync</h1>
+  </div>
+
+  <div class="body">
+
+    <h2>Digital Referrals</h2>
+    <p class="sub">Send patients to partner facilities for specialized care</p>
+
+    <div class="patient-mini">
+      <div class="icon-circle">AL</div>
+      <div>
+        <h4>Amara Lawson</h4>
+        <p>ID: HS-8829-BK10</p>
+      </div>
+      <span class="urgent-tag">URGENT</span>
+    </div>
+
+    <div class="field-card">
+      <div class="card-label">Referral Detail</div>
+
+      <div class="field-group">
+        <label class="field-label">Refer To Facility</label>
+        <input class="field-input" type="text" placeholder="Search facility name">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Visit Type</label>
+        <select class="field-select">
+          <option>Select visit type</option>
+          <option>Emergency</option>
+          <option>Specialist Consultation</option>
+          <option>Routine Follow-up</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="card-label">Send Method</div>
+      <div class="method-row">
+        <div class="method-card selected" onclick="selectMethod(this)">
+          <div class="icon-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h5>In-App</h5>
+          <p>Instant delivery</p>
+        </div>
+        <div class="method-card" onclick="selectMethod(this)">
+          <div class="icon-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+          <h5>Paper Copy</h5>
+          <p>Printed referral</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="sendReferral()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Send Referral
+    </button>
+    <div class="cancel-link" onclick="history.back()">Cancel</div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function selectMethod(card){
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+  function sendReferral(){
+    alert('Referral sent successfully.');
+  }
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

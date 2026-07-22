@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acute Respiratory Infection</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --green-badge-bg:#e5f7e9;
+    --green-badge-text:#2fa84f;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+    --sev-bg:#fbe6e6; --sev-text:#d94b4b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .header{display:flex;align-items:center;gap:10px;padding:18px 20px 14px 20px;}
+  .back-btn{background:none;border:none;color:var(--teal-dark);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+  .header h1{font-size:14px;margin:0;font-weight:700;flex:1;color:var(--teal-dark);}
+  .header .sync-icon{color:var(--teal-dark);cursor:pointer;}
+  .header .avatar-mini{
+    width:26px;height:26px;border-radius:50%;background:var(--mint-bg);color:var(--teal-dark);
+    display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;
+  }
+
+  .body{padding:0 20px 24px 20px;flex:1;}
+
+  .record-date{font-size:11px;color:var(--muted);margin-bottom:4px;}
+  h2{font-size:19px;font-weight:700;margin:0 0 10px 0;}
+  .facility-tag{
+    display:inline-flex;align-items:center;gap:6px;background:#f6f9f8;color:var(--muted);
+    font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:10px;margin-bottom:18px;
+  }
+
+  .info-card{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px;box-shadow:var(--card-shadow);}
+  .info-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--teal-dark);letter-spacing:.3px;text-transform:uppercase;margin-bottom:10px;}
+
+  .severity-row{display:flex;gap:8px;}
+  .severity-pill{flex:1;text-align:center;padding:9px 0;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid var(--line);color:var(--muted);}
+  .severity-pill.active{background:var(--sev-bg);color:var(--sev-text);border-color:var(--sev-text);}
+
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .symptom-tag{background:#f4f5f7;color:var(--ink);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;}
+
+  .patient-mini{
+    display:flex;align-items:center;gap:12px;background:var(--mint-bg);border-radius:14px;padding:12px 14px;margin-bottom:16px;position:relative;
+  }
+  .patient-mini .icon-circle{
+    width:38px;height:38px;border-radius:50%;background:var(--teal-dark);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;
+  }
+  .patient-mini h4{margin:0;font-size:14px;font-weight:700;color:var(--teal-dark);}
+  .patient-mini p{margin:2px 0 0 0;font-size:11.5px;color:var(--teal-dark);opacity:.8;}
+  .verified-tag{position:absolute;top:12px;right:14px;font-size:9px;font-weight:700;color:var(--green-badge-text);background:#ffffff;padding:3px 8px;border-radius:20px;}
+
+  .med-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+  .med-item:last-child{border-bottom:none;}
+  .med-item h5{margin:0;font-size:13px;font-weight:700;}
+  .med-item p{margin:2px 0 0 0;font-size:11px;color:var(--muted);}
+  .med-tag{font-size:10px;font-weight:700;color:var(--teal-dark);background:var(--mint-bg);padding:4px 9px;border-radius:8px;flex-shrink:0;}
+
+  .obs-text{font-size:12px;color:var(--muted);line-height:1.6;border-left:3px solid var(--teal);padding-left:12px;margin-bottom:10px;}
+  .obs-physician{font-size:11px;color:var(--ink);font-weight:600;}
+  .obs-physician span{display:block;font-size:10px;color:var(--muted);font-weight:400;}
+
+  .sync-footer{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);margin:16px 0;justify-content:center;}
+
+  .generate-btn{
+    width:100%;background:var(--teal-dark);color:#fff;border:none;border-radius:12px;
+    padding:13px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;
+  }
+  .generate-btn:hover{background:var(--teal);}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">&#8592;</button>
+    <h1>HealthSync</h1>
+    <svg class="sync-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+    <div class="avatar-mini">DR</div>
+  </div>
+
+  <div class="body">
+
+    <div class="record-date">Recorded: May 6, 09:41 AM</div>
+    <h2>Acute Respiratory Infection</h2>
+    <div class="facility-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c8c8a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      St. Jude Community Clinic
+    </div>
+
+    <div class="info-card">
+      <div class="info-label">Severity Status</div>
+      <div class="severity-row">
+        <div class="severity-pill">MILD</div>
+        <div class="severity-pill active">SEVERE</div>
+        <div class="severity-pill">MODERATE</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        Symptoms
+      </div>
+      <div class="tag-row">
+        <span class="symptom-tag">High Fever (39&deg;C)</span>
+        <span class="symptom-tag">Dry Cough</span>
+        <span class="symptom-tag">Fatigue</span>
+        <span class="symptom-tag">Chest Pain</span>
+      </div>
+    </div>
+
+    <div class="patient-mini">
+      <div class="icon-circle">JD</div>
+      <div>
+        <h4>John Doe</h4>
+        <p>ID: HS-882-011</p>
+      </div>
+      <span class="verified-tag">VERIFIED</span>
+    </div>
+
+    <div class="info-card">
+      <div class="info-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M3 12h18"/></svg>
+        Prescribed Medications &middot; 2 Items
+      </div>
+      <div class="med-item">
+        <div>
+          <h5>Amoxicillin 500mg</h5>
+          <p>1 capsule every 8 hours</p>
+        </div>
+        <span class="med-tag">7 DAYS</span>
+      </div>
+      <div class="med-item">
+        <div>
+          <h5>Paracetamol 500mg</h5>
+          <p>As needed for fever</p>
+        </div>
+        <span class="med-tag">PRN</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+        Clinical Observations
+      </div>
+      <p class="obs-text">Patient presents with fever, congestion and wheezing. Lung sounds diminished in the lower left lobe, oxygen saturation at 94% on room air. Started on antibiotics with a follow-up scheduled in 72 hours if symptoms don't improve. Vital signs to be monitored by local health worker.</p>
+      <div class="obs-physician">
+        Attending Physician
+        <span>Dr. Elena Rodriguez</span>
+      </div>
+    </div>
+
+    <div class="sync-footer">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c8c8a" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      Local records synced to central hub
+    </div>
+
+    <button class="generate-btn" onclick="generateReport()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Generate Health Report
+    </button>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function generateReport(){
+    alert('Generating PDF health report…');
+  }
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>St. Jude Community Clinic</title>
+<style>
+  :root{
+    --teal:#0e9c8f;
+    --teal-dark:#0a7d72;
+    --mint-bg:#e3f6f2;
+    --mint-text:#0a7d72;
+    --green-badge-bg:#e5f7e9;
+    --green-badge-text:#2fa84f;
+    --ink:#1c2430;
+    --gray-sub:#8b95a1;
+    --gray-line:#eef0f2;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.06);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    padding:0;
+    background:#f2f3f5;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+
+  
+  .app{
+    width:100%;
+    max-width:480px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(0,0,0,0.06);
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  .top-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 20px 14px 20px;
+  }
+  .clinic-name{display:flex;flex-direction:column;}
+  .clinic-name .brand-row{display:flex;align-items:center;gap:8px;}
+  .clinic-name .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);}
+  .clinic-name h1{font-size:17px;margin:0;color:var(--ink);font-weight:700;}
+  .clinic-name span.sub{font-size:12px;color:var(--gray-sub);margin-top:2px;padding-left:16px;}
+
+  .greeting{padding:6px 20px 18px 20px;}
+  .greeting h2{margin:0 0 6px 0;font-size:20px;color:var(--ink);font-weight:700;}
+  .greeting p{margin:0;font-size:13px;line-height:1.5;color:var(--gray-sub);}
+
+  .search-wrap{padding:0 20px 16px 20px;}
+  .search-box{
+    background:#f4f5f7;border-radius:14px;
+    display:flex;align-items:center;gap:10px;
+    padding:12px 14px;
+  }
+  .search-box input{border:none;background:transparent;outline:none;font-size:13.5px;width:100%;color:var(--ink);}
+  .search-box input::placeholder{color:#a7aeb8;}
+
+  .sync-card{
+    margin:0 20px 18px 20px;
+    background:var(--mint-bg);
+    border-radius:18px;
+    padding:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .sync-top{display:flex;gap:12px;align-items:flex-start;}
+  .sync-icon{width:38px;height:38px;border-radius:50%;background:#ffffff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sync-text h3{margin:0 0 4px 0;font-size:14.5px;color:var(--ink);font-weight:700;}
+  .sync-text p{margin:0;font-size:12px;line-height:1.5;color:var(--mint-text);opacity:0.85;}
+  .sync-btn{
+    margin-top:14px;background:var(--teal);color:#fff;border:none;border-radius:12px;
+    padding:11px 0;width:100%;font-size:13.5px;font-weight:600;cursor:pointer;letter-spacing:.2px;
+  }
+  .sync-btn:active{background:var(--teal-dark);}
+
+  .action-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    padding:0 20px 22px 20px;
+  }
+  .action-card{
+    background:#ffffff;border:1px solid var(--gray-line);box-shadow:var(--card-shadow);
+    border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;
+  }
+  .action-card .icon-circle{width:38px;height:38px;border-radius:12px;background:var(--mint-bg);display:flex;align-items:center;justify-content:center;}
+  .action-card span{font-size:13px;font-weight:600;color:var(--ink);}
+
+  .section-header{display:flex;justify-content:space-between;align-items:center;padding:0 20px 12px 20px;}
+  .section-header h3{margin:0;font-size:16px;color:var(--ink);font-weight:700;}
+  .section-header a{font-size:12.5px;color:var(--teal);font-weight:600;text-decoration:none;}
+
+  .patient-list{
+    padding:0 20px 18px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .patient-card{
+    display:flex;align-items:center;gap:12px;
+    background:#ffffff;border:1px solid var(--gray-line);box-shadow:var(--card-shadow);
+    border-radius:16px;padding:12px 14px;position:relative;
+  }
+  .patient-avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:var(--mint-bg);display:flex;align-items:center;justify-content:center;color:var(--teal-dark);font-weight:700;font-size:14px;}
+  .patient-info{flex:1;min-width:0;}
+  .patient-info .name-row{display:flex;align-items:center;gap:8px;}
+  .patient-info h4{margin:0;font-size:14px;color:var(--ink);font-weight:700;}
+  .patient-info .meta{font-size:12px;color:var(--gray-sub);margin:3px 0 6px 0;}
+  .patient-info .location-row{display:flex;align-items:center;gap:5px;}
+  .patient-info .location-row span{font-size:11.5px;color:var(--gray-sub);}
+  .consult-link{font-size:12px;font-weight:600;color:var(--teal);margin-top:6px;display:inline-block;cursor:pointer;}
+  .status-badge{position:absolute;top:12px;right:14px;background:var(--green-badge-bg);color:var(--green-badge-text);font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 22px 10px;border-top:1px solid var(--gray-line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal);}
+  .nav-item svg{stroke:currentColor;}
+
+  
+  @media (min-width:600px){
+    .app{max-width:600px;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="top-header">
+    <div class="clinic-name">
+      <div class="brand-row">
+        <span class="dot"></span>
+        <h1>St. Jude Community Clinic</h1>
+      </div>
+      <span class="sub">St Francis</span>
+    </div>
+  </div>
+
+  <div class="greeting">
+    <h2>Good morning, Dr. Fuashaale.</h2>
+    <p>Welcome back to your clinical workflow. Your local database is active.</p>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a7aeb8" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search by name, ID or village...">
+    </div>
+  </div>
+
+  <div class="sync-card">
+    <div class="sync-top">
+      <div class="sync-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e9c8f" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      </div>
+      <div class="sync-text">
+        <h3>4 pending records found locally.</h3>
+        <p>Your clinic patient records were saved offline. Sync now to update the central database.</p>
+      </div>
+    </div>
+    <button class="sync-btn" onclick="syncNow()">Sync Now</button>
+  </div>
+
+  <div class="action-row">
+    <div class="action-card" onclick="setActive(this)">
+      <div class="icon-circle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e9c8f" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+      </div>
+      <span>Register Patient</span>
+    </div>
+    <div class="action-card" onclick="setActive(this)">
+      <div class="icon-circle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e9c8f" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      </div>
+      <span>Sync Records</span>
+    </div>
+    <div class="action-card" onclick="setActive(this)">
+      <div class="icon-circle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e9c8f" stroke-width="2"><path d="M18 11a4 4 0 1 0-4-4"/><path d="M8 11a4 4 0 1 1 4-4"/><path d="M12 7v3"/><path d="M9 13c-1.5 1-2 2.5-2 4.5V21"/><path d="M15 13c1.5 1 2 2.5 2 4.5V21"/><path d="M12 10v11"/></svg>
+      </div>
+      <span>Biometric Scan</span>
+    </div>
+    <div class="action-card" onclick="setActive(this)">
+      <div class="icon-circle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e9c8f" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 11v6M9.5 14.5L12 17l2.5-2.5"/></svg>
+      </div>
+      <span>Export Reports</span>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h3>Recent Patients</h3>
+    <a href="#" onclick="return false;">View All</a>
+  </div>
+
+  <div class="patient-list" id="patientList"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Patients
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const patients = [
+    {
+      name: "Amara Lawson",
+      meta: "34, Female",
+      village: "Ekona Village",
+      status: "verified"
+    },
+    {
+      name: "Eneme Menzah",
+      meta: "51, Male",
+      village: "Bafia Village",
+      status: "pending"
+    },
+    {
+      name: "Ilene Anosike",
+      meta: "27, Female",
+      village: "Muyuka Village",
+      status: "verified"
+    }
+  ];
+
+  function pinIconSVG(){
+    return '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8b95a1" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  }
+
+  function initials(name){
+    return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+  }
+
+  function renderPatients(){
+    const list = document.getElementById('patientList');
+    list.innerHTML = patients.map(p => `
+      <div class="patient-card">
+        <div class="patient-avatar">${initials(p.name)}</div>
+        <div class="patient-info">
+          <div class="name-row"><h4>${p.name}</h4></div>
+          <p class="meta">${p.meta}</p>
+          <div class="location-row">
+            ${pinIconSVG()}
+            <span>${p.village}</span>
+          </div>
+          <a class="consult-link" onclick="return false;" href="#">Consult Now</a>
+        </div>
+        <span class="status-badge">${p.status}</span>
+      </div>
+    `).join('');
+  }
+
+  function syncNow(){
+    const btn = document.querySelector('.sync-btn');
+    const label = document.querySelector('.sync-text h3');
+    btn.textContent = "Syncing...";
+    btn.disabled = true;
+    setTimeout(() => {
+      label.textContent = "All records synced.";
+      btn.textContent = "Synced";
+    }, 1200);
+  }
+
+  function setActive(card){
+    card.style.transform = "scale(0.97)";
+    setTimeout(() => card.style.transform = "scale(1)", 120);
+  }
+
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+
+  renderPatients();
+</script>
+
+</body>
+</html>
+     

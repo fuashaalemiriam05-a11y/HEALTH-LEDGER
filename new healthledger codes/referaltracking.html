@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referral Tracking</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --green-badge-bg:#e5f7e9;
+    --green-badge-text:#2fa84f;
+    --sev-bg:#fbe6e6; --sev-text:#d94b4b;
+    --amber-bg:#fdf3dc; --amber-text:#c98a0f;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .top-header{display:flex;align-items:center;gap:8px;padding:18px 20px 12px 20px;}
+  .brand{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--teal-dark);}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);}
+
+  .search-wrap{padding:0 20px 12px 20px;}
+  .search-box{
+    background:#f4f5f7;border-radius:14px;
+    display:flex;align-items:center;gap:10px;padding:11px 14px;
+  }
+  .search-box input{border:none;background:transparent;outline:none;font-size:13px;width:100%;color:var(--ink);}
+  .search-box input::placeholder{color:#a7aeb8;}
+
+  .filter-row{display:flex;gap:8px;padding:0 20px 16px 20px;}
+  .filter-chip{
+    background:#f4f5f7;color:var(--muted);font-size:11.5px;font-weight:600;
+    padding:7px 12px;border-radius:20px;cursor:pointer;
+  }
+  .filter-chip.active{background:var(--teal-dark);color:#fff;}
+
+  .section-label{font-size:13.5px;font-weight:700;padding:0 20px 4px 20px;}
+  .section-sub{font-size:11px;color:var(--muted);padding:0 20px 14px 20px;}
+
+  .referral-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;flex:1;}
+  .referral-card{
+    border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--card-shadow);
+  }
+  .ref-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+  .ref-avatar{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--mint-bg);color:var(--teal-dark);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .ref-info{flex:1;min-width:0;}
+  .ref-info h4{margin:0;font-size:13.5px;font-weight:700;}
+  .ref-info p{margin:2px 0 0 0;font-size:11px;color:var(--muted);}
+  .ref-status{font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;}
+  .ref-status.urgent{background:var(--sev-bg);color:var(--sev-text);}
+  .ref-status.pending{background:var(--amber-bg);color:var(--amber-text);}
+  .ref-status.accepted{background:var(--green-badge-bg);color:var(--green-badge-text);}
+
+  .ref-actions{display:flex;gap:8px;}
+  .ref-btn{flex:1;text-align:center;padding:8px 0;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;}
+  .ref-btn.outline{background:#fff;border:1.5px solid var(--teal);color:var(--teal-dark);}
+  .ref-btn.filled{background:var(--teal-dark);color:#fff;border:none;}
+
+  .footer-brand{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-size:11px;font-weight:700;color:var(--teal-dark);padding:16px 0 4px 0;
+  }
+  .footer-brand .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="top-header">
+    <div class="brand"><span class="dot"></span> HealthSync</div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a7aeb8" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search facility or referral">
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <div class="filter-chip active" onclick="selectFilter(this)">All Status</div>
+    <div class="filter-chip" onclick="selectFilter(this)">Pending</div>
+    <div class="filter-chip" onclick="selectFilter(this)">Accepted</div>
+  </div>
+
+  <div class="section-label">Recent Referrals</div>
+  <div class="section-sub">Track patients sent to and from your facility</div>
+
+  <div class="referral-list">
+
+    <div class="referral-card">
+      <div class="ref-top">
+        <div class="ref-avatar">SG</div>
+        <div class="ref-info">
+          <h4>Simon Garcia</h4>
+          <p>To St. Jude Regional Hospital &middot; Today</p>
+        </div>
+        <span class="ref-status urgent">URGENT</span>
+      </div>
+      <div class="ref-actions">
+        <div class="ref-btn outline" onclick="viewReferral(this)">View Status</div>
+        <div class="ref-btn filled" onclick="acceptReferral(this)">Accept</div>
+      </div>
+    </div>
+
+    <div class="referral-card">
+      <div class="ref-top">
+        <div class="ref-avatar">AK</div>
+        <div class="ref-info">
+          <h4>Ayo Kofi</h4>
+          <p>To District 4 Clinic &middot; Yesterday</p>
+        </div>
+        <span class="ref-status pending">PENDING</span>
+      </div>
+      <div class="ref-actions">
+        <div class="ref-btn outline" onclick="viewReferral(this)">Confirm Receipt</div>
+      </div>
+    </div>
+
+    <div class="referral-card">
+      <div class="ref-top">
+        <div class="ref-avatar">LN</div>
+        <div class="ref-info">
+          <h4>Lorenzo Ngala</h4>
+          <p>To Muyuka Health Post &middot; 2 days ago</p>
+        </div>
+        <span class="ref-status accepted">ACCEPTED</span>
+      </div>
+      <div class="ref-actions">
+        <div class="ref-btn outline" onclick="viewReferral(this)">Details</div>
+        <div class="ref-btn filled" onclick="markReceived(this)">Mark as Seen</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-brand"><span class="dot"></span> HealthSync</div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function selectFilter(chip){
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  }
+  function viewReferral(btn){ alert('Opening referral details…'); }
+  function acceptReferral(btn){
+    const card = btn.closest('.referral-card');
+    card.querySelector('.ref-status').textContent = 'ACCEPTED';
+    card.querySelector('.ref-status').className = 'ref-status accepted';
+  }
+  function markReceived(btn){ alert('Referral marked as seen.'); }
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

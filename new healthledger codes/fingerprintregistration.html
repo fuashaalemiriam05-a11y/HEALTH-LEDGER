@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fingerprint Registration</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .header{display:flex;align-items:center;gap:10px;padding:18px 20px 14px 20px;}
+  .back-btn{background:none;border:none;color:var(--teal-dark);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+  .header h1{font-size:14px;margin:0;font-weight:700;flex:1;color:var(--teal-dark);}
+  .sync-icon{color:var(--teal-dark);}
+
+  .steps-row{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 20px 18px 20px;}
+  .step{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .step .circle{width:26px;height:26px;border-radius:50%;background:var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+  .step.done .circle{background:var(--teal-dark);color:#fff;}
+  .step.active .circle{background:var(--teal-dark);color:#fff;}
+  .step span.label{font-size:9.5px;color:var(--muted);}
+  .step-line{width:28px;height:2px;background:var(--line);margin-bottom:16px;}
+  .step-line.done{background:var(--teal-dark);}
+
+  .body{padding:0 20px 24px 20px;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;}
+
+  h2{font-size:18px;font-weight:700;margin:0 0 8px 0;}
+  .sub{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 26px 0;}
+
+  .scanner-wrap{
+    width:170px;height:170px;border-radius:50%;
+    background:radial-gradient(circle, #d7f0ec 0%, #eef8f6 70%, transparent 100%);
+    display:flex;align-items:center;justify-content:center;margin-bottom:12px;position:relative;
+  }
+  .scanner-wrap::before{
+    content:"";position:absolute;inset:0;border-radius:50%;border:2px dashed var(--teal);opacity:.5;
+  }
+  .scanner-inner{
+    width:100px;height:120px;border-radius:16px;
+    background:linear-gradient(160deg,#9fb0ae,#5b6d6a);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.25);
+  }
+  .scan-caption{font-size:11px;color:var(--muted);margin:0 0 16px 0;}
+
+  .scan-btn{
+    background:var(--teal-dark);color:#fff;border:none;border-radius:20px;
+    padding:11px 24px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:8px;
+    cursor:pointer;margin:16px 0 22px 0;
+  }
+  .scan-btn:hover{background:var(--teal);}
+
+  .instructions{width:100%;text-align:left;margin-bottom:24px;}
+  .instr-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;}
+  .instr-row .num{
+    width:20px;height:20px;border-radius:50%;background:var(--mint-bg);color:var(--teal-dark);
+    font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+  }
+  .instr-row p{margin:0;font-size:12px;color:var(--muted);line-height:1.4;}
+
+  .complete-btn{
+    width:100%;background:var(--teal-dark);color:#fff;border:none;border-radius:12px;
+    padding:13px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px;
+  }
+  .complete-btn:hover{background:var(--teal);}
+  .retry-btn{
+    width:100%;background:#fff;color:var(--teal-dark);border:1.5px solid var(--teal);border-radius:12px;
+    padding:11px;font-size:12.5px;font-weight:700;cursor:pointer;
+  }
+  .retry-btn:hover{background:var(--mint-bg);}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;width:100%;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">&#8592;</button>
+    <h1>HealthSync</h1>
+    <svg class="sync-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+  </div>
+
+  <div class="steps-row">
+    <div class="step done"><div class="circle">&#10003;</div><span class="label">Fill</span></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="circle">&#10003;</div><span class="label">Check</span></div>
+    <div class="step-line"></div>
+    <div class="step active"><div class="circle">3</div><span class="label">Scan</span></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Fingerprint Registration</h2>
+    <p class="sub">Enroll the patient's fingerprint now for faster identity verification during future visits.</p>
+
+    <div class="scanner-wrap">
+      <div class="scanner-inner">
+        <svg width="50" height="60" viewBox="0 0 100 120" fill="none" stroke="#e8f6f3" stroke-width="4.2" stroke-linecap="round">
+          <path d="M50 8C27 8 12 26 12 50c0 18 5 30 14 42"/>
+          <path d="M50 8c23 0 38 18 38 42 0 10-1.5 18-4 25"/>
+          <path d="M50 20C33 20 22 34 22 50c0 16 5 27 13 38"/>
+          <path d="M50 20c17 0 28 14 28 30 0 8-1.2 15-3.5 21"/>
+          <path d="M50 32c-11.5 0-19 8-19 18 0 13 4.5 22.5 12 32"/>
+          <path d="M50 32c11.5 0 19 8 19 18 0 6.5-1 12-2.8 17"/>
+          <path d="M50 44c-6 0-10 4.2-10 9.6 0 9 3 15.5 8.5 22"/>
+          <path d="M50 44c6 0 10 4.2 10 9.6 0 4.3-.7 8-2 11.4"/>
+        </svg>
+      </div>
+    </div>
+    <p class="scan-caption">Position finger within the frame</p>
+
+    <button class="scan-btn" onclick="scanFingerprint()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      Start Fingerprint Scan
+    </button>
+
+    <div class="instructions">
+      <div class="instr-row">
+        <div class="num">1</div>
+        <p>Place the patient's index finger flat on the scanner</p>
+      </div>
+      <div class="instr-row">
+        <div class="num">2</div>
+        <p>Hold steady until the progress ring fills completely</p>
+      </div>
+      <div class="instr-row">
+        <div class="num">3</div>
+        <p>Wait for the confirmation before releasing the finger</p>
+      </div>
+    </div>
+
+    <button class="complete-btn" onclick="completeRegistration()">Complete Registration</button>
+    <button class="retry-btn" onclick="tryAnotherFinger()">Try Another Finger</button>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function scanFingerprint(){
+    const btn = document.querySelector('.scan-btn');
+    btn.textContent = 'Scanning…';
+    setTimeout(() => { btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Scan Complete'; }, 1200);
+  }
+  function completeRegistration(){
+    alert('Fingerprint registered successfully.');
+  }
+  function tryAnotherFinger(){
+    alert('Restarting scan with a different finger…');
+  }
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

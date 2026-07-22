@@ -1,0 +1,217 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Back — St. Jude Community Clinic</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --teal-dark:#0f6f66;
+  --teal:#17a398;
+  --teal-light:#e4f5f3;
+  --ink:#1c2b2a;
+  --muted:#7c8c8a;
+  --line:#eaefee;
+  --bg:#f4f7f6;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  background:var(--bg);
+  font-family:'Inter', sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  margin:0;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+}
+
+h1,.brand,.btn{font-family:'Poppins', sans-serif;}
+
+.auth-card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  box-shadow:0 4px 24px rgba(15,60,55,.06);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.auth-header{padding:20px 24px 16px;border-bottom:1px solid var(--line);}
+.auth-header .brand-group{display:flex;align-items:center;gap:8px;}
+.auth-header .brand-group i{color:var(--teal-dark);font-size:1.15rem;}
+.auth-header .brand{font-size:.95rem;font-weight:700;color:var(--teal-dark);}
+
+.auth-body{padding:26px 24px 24px;flex:1;display:flex;flex-direction:column;}
+.auth-body h1{font-size:1.35rem;font-weight:700;margin-bottom:8px;}
+.auth-body .sub{color:var(--muted);font-size:.83rem;line-height:1.5;margin-bottom:26px;}
+
+.field-label{
+  font-size:.76rem;font-weight:600;color:var(--ink);
+  margin-bottom:6px;display:block;
+}
+.input-teal{background:#f6f9f8;border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+.input-group-text-teal{background:#f6f9f8;border:1px solid var(--line);border-radius:12px;color:var(--muted);}
+.input-teal:focus{box-shadow:none;border-color:var(--teal);}
+
+.icon-left-group .input-group-text-teal{
+  border-radius:12px 0 0 12px;
+  border-right:none;
+  border-left:1px solid var(--line);
+}
+.icon-left-group .input-teal{border-radius:0 12px 12px 0;border-left:none;}
+
+.field-block{margin-bottom:16px;}
+.field-block .field-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.field-block .field-label-row .field-label{margin-bottom:0;}
+.field-block .field-label-row a{font-size:.76rem;color:var(--teal-dark);text-decoration:none;font-weight:600;}
+
+.btn-secure{
+  background:var(--teal-dark);
+  color:#fff;
+  border-radius:12px;
+  padding:13px;
+  font-weight:600;
+  font-size:.9rem;
+  border:none;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:6px;
+}
+.btn-secure:hover{background:var(--teal);color:#fff;}
+
+.divider-or{
+  text-align:center;color:var(--muted);
+  font-size:.7rem;letter-spacing:.5px;
+  margin:16px 0;position:relative;
+}
+.divider-or::before{
+  content:"";position:absolute;left:0;right:0;top:50%;
+  height:1px;background:var(--line);z-index:0;
+}
+.divider-or span{background:#fff;position:relative;z-index:1;padding:0 12px;}
+
+.btn-biometric{
+  background:#fff;
+  color:var(--teal-dark);
+  border:1.5px solid var(--teal);
+  border-radius:12px;
+  padding:12px;
+  font-weight:600;
+  font-size:.87rem;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-biometric:hover{background:var(--teal-light);color:var(--teal-dark);}
+
+.auth-footer{margin-top:auto;padding-top:26px;text-align:center;}
+.auth-footer .signup-line{font-size:.8rem;color:var(--muted);margin-bottom:18px;}
+.auth-footer .signup-line a{color:var(--teal-dark);font-weight:700;text-decoration:none;}
+
+.trust-badges{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  font-size:.65rem;color:var(--muted);font-weight:600;letter-spacing:.2px;
+  margin-bottom:14px;
+}
+.trust-badges span{display:flex;align-items:center;gap:5px;}
+.trust-badges i{color:var(--teal);}
+
+.auth-copy{font-size:.68rem;color:#a7b3b1;margin-bottom:8px;}
+.auth-links{font-size:.68rem;color:var(--muted);}
+.auth-links a{color:var(--muted);text-decoration:none;}
+.auth-links a:hover{color:var(--teal-dark);}
+
+
+@media (min-width:600px){
+  .auth-card{max-width:520px;}
+}
+</style>
+</head>
+<body>
+
+<div class="auth-card" id="loginScreen">
+  <div class="auth-header">
+    <div class="brand-group">
+      <i class="bi bi-shield-fill-check">st jude community clinic</i>
+      <div class="brand"></div>
+    </div>
+  </div>
+  <div class="auth-body">
+    <h1>Welcome Back</h1>
+    <p class="sub">Access your health records with clinical precision and security.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="field-block">
+        <div class="field-label-row">
+          <label class="field-label" for="healthId">Health ID or Email Address</label>
+        </div>
+        <div class="input-group icon-left-group">
+          <span class="input-group-text input-group-text-teal"><i class="bi bi-person"></i></span>
+          <input type="text" class="form-control input-teal" id="healthId" placeholder="e.g. HS-12345678" required>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-label-row">
+          <label class="field-label" for="pwField">4-Digit PIN or Password</label>
+          <a href="#">Forgot?</a>
+        </div>
+        <div class="input-group icon-left-group">
+          <span class="input-group-text input-group-text-teal"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control input-teal" id="pwField" placeholder="&bull;&bull;&bull;&bull;" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-secure w-100">
+        Secure Sign In <i class="bi bi-arrow-right"></i>
+      </button>
+    </form>
+
+    <div class="divider-or"><span>OR</span></div>
+
+    <button type="button" class="btn btn-biometric w-100" id="biometricBtn">
+      <i class="bi bi-fingerprint"></i> Biometric Login
+    </button>
+
+    <div class="auth-footer">
+      <p class="signup-line">New to Healthledger? <a href="#">Sign Up for an Account</a></p>
+
+      <div class="trust-badges">
+        <span><i class="bi bi-check-circle-fill"></i> HIPAA COMPLIANT</span>
+        <span><i class="bi bi-check-circle-fill"></i> AES-256 ENCRYPTED</span>
+      </div>
+      <p class="auth-copy">&copy; 2024 St. Jude Community Clinic. All rights reserved.</p>
+      <p class="auth-links">
+        <a href="#">Privacy Policy</a> &nbsp;&middot;&nbsp;
+        <a href="#">Terms of Service</a> &nbsp;&middot;&nbsp;
+        <a href="#">Emergency Contact</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = document.getElementById('healthId').value.trim();
+    const pw = document.getElementById('pwField').value.trim();
+    if (!id || !pw) {
+      alert('Enter your Health ID and PIN to continue.');
+      return;
+    }
+    alert('Signed in successfully.');
+  });
+
+  document.getElementById('biometricBtn').addEventListener('click', () => {
+    alert('Waiting for fingerprint or Face ID…');
+  });
+</script>
+</body>
+</html>

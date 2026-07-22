@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Settings</title>
+<style>
+  :root{
+    --teal-dark:#0f6f66;
+    --teal:#17a398;
+    --mint-bg:#e4f5f3;
+    --ink:#1c2b2a;
+    --muted:#7c8c8a;
+    --line:#eaefee;
+    --bg:#f4f7f6;
+    --card-shadow:0 2px 10px rgba(20,30,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    box-shadow:0 4px 24px rgba(15,60,55,.06);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .top-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:18px 20px 4px 20px;}
+  .brand{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--teal-dark);}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);}
+  .sync-icon{color:var(--teal-dark);cursor:pointer;}
+  .sub-header{font-size:11.5px;color:var(--muted);padding:6px 20px 18px 20px;}
+
+  .body{padding:0 20px 24px 20px;flex:1;}
+
+  .section-label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;margin:0 0 10px 0;}
+
+  .settings-card{border:1px solid var(--line);border-radius:14px;box-shadow:var(--card-shadow);margin-bottom:20px;overflow:hidden;}
+  .settings-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);}
+  .settings-row:last-child{border-bottom:none;}
+  .settings-row .rtext{flex:1;min-width:0;}
+  .settings-row h4{margin:0;font-size:13px;font-weight:700;}
+  .settings-row p{margin:2px 0 0 0;font-size:11px;color:var(--muted);}
+
+  .toggle{
+    position:relative;width:38px;height:22px;border-radius:20px;background:var(--line);flex-shrink:0;cursor:pointer;transition:background .15s;
+  }
+  .toggle.on{background:var(--teal-dark);}
+  .toggle .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s;}
+  .toggle.on .knob{left:18px;}
+
+  .radio-option{padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .radio-option:last-child{border-bottom:none;}
+  .radio-option.selected{background:var(--mint-bg);}
+  .radio-option h5{margin:0;font-size:12.5px;font-weight:700;color:var(--teal-dark);}
+  .radio-option p{margin:2px 0 0 0;font-size:11px;color:var(--muted);}
+
+  .change-link{font-size:11.5px;color:var(--teal-dark);font-weight:700;cursor:pointer;flex-shrink:0;}
+
+  .storage-box{background:#f6f9f8;border-radius:14px;padding:14px;margin-bottom:20px;}
+  .storage-top{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;}
+  .storage-top span.used{color:var(--teal-dark);}
+  .progress-track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:12px;}
+  .progress-fill{height:100%;background:var(--teal-dark);width:62%;}
+  .storage-row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:6px;}
+  .storage-row strong{color:var(--ink);font-weight:700;}
+  .clear-cache-btn{
+    width:100%;background:var(--teal-dark);color:#fff;border:none;border-radius:10px;
+    padding:10px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:8px;
+  }
+  .clear-cache-btn:hover{background:var(--teal);}
+
+  .signout-btn{
+    width:100%;background:#fff;color:#d94b4b;border:1.5px solid #d94b4b;border-radius:12px;
+    padding:12px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;
+  }
+  .signout-btn:hover{background:#fbe6e6;}
+  .version-note{text-align:center;font-size:10.5px;color:var(--muted);margin-bottom:6px;}
+
+  .bottom-nav{
+    display:flex;justify-content:space-around;align-items:center;
+    padding:10px 10px 20px 10px;border-top:1px solid var(--line);background:#ffffff;
+    margin-top:auto;
+  }
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#b3b9c2;font-size:10.5px;cursor:pointer;}
+  .nav-item.active{color:var(--teal-dark);}
+  .nav-item svg{stroke:currentColor;}
+
+  @media (min-width:600px){
+    .screen{max-width:520px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="top-header">
+    <div class="brand"><span class="dot"></span> St. Jude Community Clinic</div>
+    <svg class="sync-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+  </div>
+  <div class="sub-header">Manage your sync preferences and provider settings</div>
+
+  <div class="body">
+
+    <div class="section-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      Sync Settings
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="rtext">
+          <h4>Offline Mode</h4>
+          <p>Sync data locally when internet is unavailable</p>
+        </div>
+        <div class="toggle on" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+      <div class="radio-option selected" onclick="selectRadio(this)">
+        <h5>Auto Sync</h5>
+        <p>Sync automatically when connected</p>
+      </div>
+      <div class="radio-option" onclick="selectRadio(this)">
+        <h5>Manual Sync</h5>
+        <p>Sync only when triggered</p>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      Security
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="rtext">
+          <h4>PIN Management</h4>
+          <p>Update your 4-digit access code</p>
+        </div>
+        <span class="change-link">Change</span>
+      </div>
+      <div class="settings-row">
+        <div class="rtext">
+          <h4>Biometric Login</h4>
+          <p>Sign in with fingerprint or Face ID</p>
+        </div>
+        <div class="toggle" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+    </div>
+
+    <div class="storage-box">
+      <div class="storage-top">
+        <span>Storage</span>
+        <span class="used">2.4GB Used</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="storage-row"><span>Local Records (Photos)</span><strong>960 MB</strong></div>
+      <div class="storage-row"><span>Encrypted Sync Logs</span><strong>210 MB</strong></div>
+      <div class="storage-row"><span>Cache Data</span><strong>420 MB</strong></div>
+      <button class="clear-cache-btn" onclick="clearCache()">Clear Cache</button>
+    </div>
+
+    <div class="section-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f6f66" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z"/></svg>
+      Language &amp; Region
+    </div>
+    <div class="settings-card">
+      <div class="radio-option selected" onclick="selectRadio(this)">
+        <h5>English</h5>
+      </div>
+      <div class="radio-option" onclick="selectRadio(this)">
+        <h5>French</h5>
+      </div>
+      <div class="settings-row">
+        <p style="margin:0;">Last synced: Today, 08:42 AM</p>
+      </div>
+    </div>
+
+    <button class="signout-btn" onclick="signOut()">Sign Out</button>
+    <p class="version-note">HealthSync v2.4.1</p>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </div>
+    <div class="nav-item" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Records
+    </div>
+    <div class="nav-item active" onclick="setNav(this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleSwitch(el){ el.classList.toggle('on'); }
+  function selectRadio(el){
+    const group = el.closest('.settings-card');
+    group.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function clearCache(){ alert('Cache cleared. Freed up 420 MB.'); }
+  function signOut(){ if(confirm('Are you sure you want to sign out?')){ alert('Signed out.'); } }
+  function setNav(item){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
